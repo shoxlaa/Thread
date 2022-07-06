@@ -1,36 +1,73 @@
-﻿// See https://aka.ms/new-console-template for more information
-using System.Threading;
+﻿using System.Threading;
 
-Console.WriteLine("Hello, World!");
 
- Timer _timer = null;
-// Create a Timer object that knows to call our TimerCallback
-// method once every 2000 milliseconds.
-_timer = new Timer(TimerCallback, null, 0, 2000);
-// Wait for the user to hit <Enter>
-Console.ReadLine();
- static void TimerCallback(Object o)
+
+//while (true)
+//{
+//    Console.WriteLine("Start? Yes Or No");
+//    string? v = Console.ReadLine(); 
+//    if (v == "Yes")
+//    {
+
+//    }
+//}
+
+//Thread thread1 = new Thread(() =>
+//{
+
+//})
+//{
+//	IsBackground = true
+//}; 
+
+
+MyTimer timer = new(); 
+
+timer.Start();
+
+public class MyTimer
 {
-    // Display the date/time when this method got called.
-    Console.WriteLine("In TimerCallback: " + DateTime.Now);
-}
+public DateTime Begin { get; set; } 
+public DateTime End { get; set; }
+public System.Timers.Timer Timer { get; set; }  
+public int Interval { get; set; }	= 500;
+public int Difference { get; private set; }
 
-while (true)
-{
-    Console.WriteLine("Start? Yes Or No");
-    string? v = Console.ReadLine(); 
-    if (v == "Yes")
+	public MyTimer()
     {
+		Timer = new System.Timers.Timer(); 
+		
+	} 
+	public void Start()
+    {
+		Timer.Interval = Interval;
+		Timer.Elapsed += OnTimedEvent;
+		Timer.AutoReset = true;
+		Timer.Enabled = true;
+		Console.WriteLine("Press the Enter key to exit anytime... ");
+		Console.ReadLine();
 
-    }
+		// Releasing Timer resources once done
+		Timer.Stop();
+		Timer.Dispose(); 
+
+		Console.WriteLine(Difference);
+
+	}
+	private int iteration = 0;
+	 void OnTimedEvent(Object source, System.Timers.ElapsedEventArgs e)
+	{
+		// Code to be executed at the end of Timer
+		if (iteration == 0)
+		{
+			Begin = DateTime.Now; 
+			iteration++;
+		} 
+		End = DateTime.Now; 
+
+		Difference =  (End.Second-Begin.Second);
+
+	}
 }
-
-Thread thread1 = new Thread(() =>
-{
-	
-})
-{
-	IsBackground = true
-};
 
 
